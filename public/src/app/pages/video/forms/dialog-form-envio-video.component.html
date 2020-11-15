@@ -1,0 +1,25 @@
+<form (ngSubmit)="enviar()" [formGroup]="formVideo">
+	<koala-dialog
+		btnCloseColor="warn"
+		btnCloseLabel="Fechar"
+		iconTitleDialog="queue_play_next"
+		titleDialog="Enviar novo vídeo">
+		
+		<div dialog-content>
+			<koala-dynamic-form
+				[formConfig]="formVideoConfig"
+				[form]="formVideo">
+			</koala-dynamic-form>
+		</div>
+		
+		<div dialog-actions>
+			<koala-submit
+				[btnLabel]="btnLabel"
+				[btnSubmitDisabled]="btnSubmitDisabled"
+				[fg]="formVideo"
+				[loader]="loader">
+			</koala-submit>
+		</div>
+		
+	</koala-dialog>
+</form>

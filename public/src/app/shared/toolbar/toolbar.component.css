@@ -1,0 +1,57 @@
+.toolbar {
+    -webkit-app-region: drag;
+    background: #191919;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    display: block;
+    height: 40px;
+    position: relative;
+    width: 100%;
+    z-index: 10000;
+}
+.toolbar figure {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.toolbar figure img {
+    display: inline-block;
+    height: 25px;
+    padding: 7px 5px 2px 20px;
+    position: relative;
+    width: 25px;
+}
+.toolbar figure figcaption {
+    color: #FFFFFF;
+    display: inline-block;
+    font-family: OpenSansLight, sans-serif;
+    font-size: 12px;
+    position: relative;
+    top: -10px;
+}
+.toolbar .btn-group-action {
+    display: inline-block;
+    float: right;
+    position: relative;
+}
+.toolbar .btn-group-action button {
+    -webkit-app-region: no-drag;
+    border-radius: 0;
+    color: #FFFFFF;
+    display: inline-block;
+    height: 40px;
+    transition: .2s;
+    width: 60px;
+}
+.toolbar .btn-group-action button:hover {
+    background: rgba(255, 255, 255, .1);
+}
+.toolbar .btn-group-action button.close:hover {
+    background: #E53935;
+}
+.toolbar .btn-group-action button .icon {
+    font-size: 21px;
+    height: 20px;
+    line-height: 16px;
+    width: 20px;
+}
