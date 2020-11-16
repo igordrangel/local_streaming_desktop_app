@@ -89,10 +89,16 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 		this.loading(true);
 		await this.requestService
 		          .request(
-			          this.localStreamingService.novoVideo(this.dynamicFormService.emitData(this.formVideo)),
+			          this.localStreamingService.novoVideo(this.prepararDadosEnvio()),
 			          () => {
 				          this.dialogRef.close('reloadList');
 				          this.loading(false);
 			          }, () => this.loading(false));
+	}
+	
+	private prepararDadosEnvio() {
+		const data = this.dynamicFormService.emitData(this.formVideo) as any;
+		data.arquivo = data.arquivo[0];
+		return data;
 	}
 }
