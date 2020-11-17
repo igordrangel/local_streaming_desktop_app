@@ -79,7 +79,7 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 				text: 'Anexe um vídeo',
 				icon: 'movie',
 				color: "white",
-				backgroundColor: "transparent"
+				backgroundColor: "blue"
 			},
 			required: true
 		}];

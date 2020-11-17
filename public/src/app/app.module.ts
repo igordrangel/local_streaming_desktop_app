@@ -21,6 +21,7 @@ import {
 import { PageVideosComponent } from "./pages/video/page-videos.component";
 import { NgxElectronModule } from "ngx-electron";
 import { DialogFormEnvioVideoComponent } from "./pages/video/forms/dialog-form-envio-video.component";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { DialogFormEnvioVideoComponent } from "./pages/video/forms/dialog-form-e
     KoalaDialogModule,
     KoalaButtonModule,
     KoalaFormModule,
+    MatCardModule,
     ToolbarModule,
     FooterModule,
     AppRoutingModule
