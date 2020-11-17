@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { VideoInterface } from "../pages/video/video.interface";
 
 export const API_URL = 'http://localhost:9090';
 
@@ -12,5 +13,9 @@ export class LocalStreamingService {
   
   public novoVideo(data: any) {
     return this.http.post(this.urlServer + '/video', data).toPromise();
+  }
+  
+  public getLista() {
+    return this.http.get<VideoInterface[]>(this.urlServer + '/videos');
   }
 }

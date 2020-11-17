@@ -14,12 +14,12 @@
 		</koala-button>
 	</nav>
 	
-	<section content>
-		<mat-card class="card-video">
-			<img [alt]="" [src]="" mat-card-image/>
+	<section *ngIf="videos$ | async as videos" content>
+		<mat-card *ngFor="let video of videos" class="card-video">
+			<img *ngIf="video.poster | async as poster" [alt]="poster.src" [src]="poster.alt" mat-card-image/>
 			<mat-card-header>
-				<mat-card-title></mat-card-title>
-				<mat-card-subtitle></mat-card-subtitle>
+				<mat-card-title>{{video.tituloOriginal}}</mat-card-title>
+				<mat-card-subtitle>{{categoriaTranslate.translate(video.categoria).name}}</mat-card-subtitle>
 			</mat-card-header>
 		</mat-card>
 	</section>
