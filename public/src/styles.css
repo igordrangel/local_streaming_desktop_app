@@ -1,3 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
 html, body { background: #212121;height: 100%; }
 body { font-family: Roboto, 'Helvetica Neue', sans-serif; margin: 0; }
+mat-card-header .mat-card-header-text {width: 100%;}

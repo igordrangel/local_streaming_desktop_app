@@ -14,19 +14,7 @@ import { VideoCategoriaEnumTranslate } from "./forms/enums/translate/video-categ
 })
 export class PageVideosComponent {
 	public categoriaTranslate = VideoCategoriaEnumTranslate;
-	public videos$ = this.localStreamingService
-	                     .getLista()
-	                     .pipe(switchMap(videos => {
-		                     return new Observable<VideoInterface[]>(observe => {
-			                     videos.map(video => {
-				                     video.poster = new BehaviorSubject<PosterInterface>({
-					                     src: '/assets/poster-default',
-					                     alt: 'Video de Teste'
-				                     });
-			                     });
-			                     observe.next(videos);
-		                     });
-	                     }));
+	public videos$ = this.getLista();
 	
 	constructor(
 		private dialog: KoalaDialogService,
@@ -39,7 +27,23 @@ export class PageVideosComponent {
 			'normal',
 			null,
 			'reloadList',
-			() => {}
+			() => this.videos$ = this.getLista()
 		);
+	}
+	
+	private getLista() {
+		return this.localStreamingService
+		           .getLista()
+		           .pipe(switchMap(videos => {
+			           return new Observable<VideoInterface[]>(observe => {
+				           videos.map(video => {
+					           video.poster = new BehaviorSubject<PosterInterface>({
+						           src: './assets/poster-default.jpg',
+						           alt: 'Video de Teste'
+					           });
+				           });
+				           observe.next(videos);
+			           });
+		           }));
 	}
 }

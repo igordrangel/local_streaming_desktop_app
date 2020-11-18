@@ -1,2 +1,5 @@
-section {padding: 0 10px;}
-.card-video {display: flex;flex-wrap: wrap;margin: 0 5px;width: 150px;}
+section {box-sizing: border-box;display: flex;flex-wrap: wrap;padding: 0 10px;width: 100%;}
+.card-video {flex-direction: column;margin: 5px;width: calc((100% - 250px) / 6);}
+.card-video:nth-child(6n+1) {margin-left: 0;}
+.card-video:nth-child(6n) {margin-right: 0;}
+.card-video mat-card-header {text-align: center;width: 100%;}

@@ -16,7 +16,7 @@
 	
 	<section *ngIf="videos$ | async as videos" content>
 		<mat-card *ngFor="let video of videos" class="card-video">
-			<img *ngIf="video.poster | async as poster" [alt]="poster.src" [src]="poster.alt" mat-card-image/>
+			<img *ngIf="video.poster | async as poster" [alt]="poster.alt" [src]="poster.src" mat-card-image/>
 			<mat-card-header>
 				<mat-card-title>{{video.tituloOriginal}}</mat-card-title>
 				<mat-card-subtitle>{{categoriaTranslate.translate(video.categoria).name}}</mat-card-subtitle>
