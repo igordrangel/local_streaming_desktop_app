@@ -11,6 +11,10 @@ import { videoTipoOptions } from "./video-tipo.options";
 import { videoCategoriaOptions } from "./video-categoria.options";
 import { LocalStreamingService } from "../../../core/local-streaming.service";
 import { MatDialogRef } from "@angular/material/dialog";
+import { VideoTipoEnum } from "./enums/video-tipo.enum";
+import { BehaviorSubject } from "rxjs";
+import { KoalaDynamicFormShowFieldInterface } from "ngx-koala/lib/shared/components/form/dynamic-form/interfaces/koala.dynamic-form-show-field.interface";
+import { KlDelay } from "koala-utils/dist/utils/KlDelay";
 
 @Component({
 	templateUrl: 'dialog-form-envio-video.component.html'
@@ -18,6 +22,8 @@ import { MatDialogRef } from "@angular/material/dialog";
 export class DialogFormEnvioVideoComponent extends FormAbstract implements OnInit {
 	public formVideo: FormGroup;
 	public formVideoConfig: KoalaDynamicFormFieldInterface[];
+	public showFields = new BehaviorSubject<KoalaDynamicFormShowFieldInterface[]>(null);
+	public videoTipo: VideoTipoEnum;
 	
 	constructor(
 		private fb: FormBuilder,
@@ -58,6 +64,18 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 			class: 'col-6',
 			fieldClass: 'w-100',
 			opcoesSelect: videoTipoOptions,
+			valueChanges: async (tipo: VideoTipoEnum) => {
+				this.showFields.next([
+					{name: 'arquivo', show: false},
+					{name: 'arquivos', show: false}
+				]);
+				await KlDelay.waitFor(5);
+				if (tipo === VideoTipoEnum.filme) {
+					this.showFields.next([{name: 'arquivo', show: true}]);
+				} else {
+					this.showFields.next([{name: 'arquivos', show: true}]);
+				}
+			},
 			required: true
 		}, {
 			label: 'Categoria',
@@ -70,13 +88,29 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 			opcoesSelect: videoCategoriaOptions,
 			required: true
 		}, {
+			show: false,
 			name: 'arquivo',
 			type: DynamicFormTypeFieldEnum.file,
 			class: 'col-12',
 			fieldClass: 'w-100',
 			fileButtonConfig: {
 				accept: '.mp4, .mkv, .webm',
-				text: 'Anexe um vídeo',
+				text: 'Anexe seu Filme aqui!',
+				icon: 'movie',
+				color: "white",
+				backgroundColor: "blue"
+			},
+			required: true
+		}, {
+			show: false,
+			name: 'arquivos',
+			type: DynamicFormTypeFieldEnum.file,
+			class: 'col-12',
+			fieldClass: 'w-100',
+			multiple: true,
+			fileButtonConfig: {
+				accept: '.mp4, .mkv, .webm',
+				text: 'Anexe seus episódios aqui!',
 				icon: 'movie',
 				color: "white",
 				backgroundColor: "blue"
