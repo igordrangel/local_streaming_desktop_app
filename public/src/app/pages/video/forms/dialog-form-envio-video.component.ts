@@ -23,7 +23,6 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 	public formVideo: FormGroup;
 	public formVideoConfig: KoalaDynamicFormFieldInterface[];
 	public showFields = new BehaviorSubject<KoalaDynamicFormShowFieldInterface[]>(null);
-	public videoTipo: VideoTipoEnum;
 	
 	constructor(
 		private fb: FormBuilder,
