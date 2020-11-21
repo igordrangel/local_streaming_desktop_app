@@ -6,7 +6,7 @@
 	
 	<nav menu-page>
 		<koala-button
-			(click)="novoVideo()"
+			(click)="dialogVideo()"
 			backgroundColor="transparent"
 			color="white"
 			icon="queue_play_next"
@@ -21,6 +21,9 @@
 				<mat-card-title>{{video.tituloOriginal}}</mat-card-title>
 				<mat-card-subtitle>{{categoriaTranslate.translate(video.categoria).name}}</mat-card-subtitle>
 			</mat-card-header>
+			<mat-card-actions align="end">
+				<button (click)="dialogVideo(video)" color="primary" mat-button>Editar</button>
+			</mat-card-actions>
 		</mat-card>
 	</section>
 	

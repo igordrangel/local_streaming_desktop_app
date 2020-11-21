@@ -4,6 +4,7 @@ import { VideoCategoriaEnum } from "./forms/enums/video-categoria.enum";
 import { VideoTipoEnum } from "./forms/enums/video-tipo.enum";
 
 export interface VideoInterface {
+	id: number;
 	tituloOriginal: string;
 	titulo?: string;
 	categoria: VideoCategoriaEnum;

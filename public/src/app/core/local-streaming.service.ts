@@ -15,6 +15,14 @@ export class LocalStreamingService {
     return this.http.post(this.urlServer + '/video', data).toPromise();
   }
   
+  public editar(id: number, data: any) {
+    return this.http.put(this.urlServer + '/video/' + id, data).toPromise();
+  }
+  
+  public excluir(id: number) {
+    return this.http.delete(this.urlServer + '/video/' + id).toPromise();
+  }
+  
   public getLista() {
     return this.http.get<VideoInterface[]>(this.urlServer + '/videos');
   }

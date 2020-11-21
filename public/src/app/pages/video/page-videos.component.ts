@@ -21,11 +21,11 @@ export class PageVideosComponent {
 		private localStreamingService: LocalStreamingService
 	) {}
 	
-	public novoVideo() {
+	public dialogVideo(video?: VideoInterface) {
 		this.dialog.open(
 			DialogFormEnvioVideoComponent,
 			'normal',
-			null,
+			video,
 			'reloadList',
 			() => this.videos$ = this.getLista()
 		);

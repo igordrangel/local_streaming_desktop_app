@@ -2,8 +2,8 @@
 	<koala-dialog
 		btnCloseColor="warn"
 		btnCloseLabel="Fechar"
-		iconTitleDialog="queue_play_next"
-		titleDialog="Enviar novo vídeo">
+		[iconTitleDialog]="this.video ? 'edit' : 'queue_play_next'"
+		[titleDialog]="this.video ? 'Editar video' : 'Enviar novo vídeo'">
 		
 		<div dialog-content>
 			<koala-dynamic-form
@@ -14,6 +14,15 @@
 		</div>
 		
 		<div dialog-actions>
+			<button
+				(click)="excluir()"
+				*ngIf="this.video"
+				class="mr-8"
+				color="warn"
+				mat-raised-button
+				type="button">
+				Excluir
+			</button>
 			<koala-submit
 				[btnLabel]="btnLabel"
 				[btnSubmitDisabled]="btnSubmitDisabled"
