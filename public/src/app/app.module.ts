@@ -32,16 +32,16 @@ import { MatCardModule } from "@angular/material/card";
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    NgxKoalaModule,
+    ToolbarModule,
+    FooterModule,
     NgxElectronModule,
+    NgxKoalaModule,
     KoalaFolderPageModule,
     KoalaQuestionModule,
     KoalaDialogModule,
     KoalaButtonModule,
     KoalaFormModule,
     MatCardModule,
-    ToolbarModule,
-    FooterModule,
     AppRoutingModule
   ],
   providers: [

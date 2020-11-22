@@ -14,7 +14,8 @@ export class Electron {
 		height: 720,
 		frame: false,
 		webPreferences: {
-			nodeIntegration: true
+			nodeIntegration: true,
+			enableRemoteModule: true
 		}
 	};
 	private static _windows: ElectronWindowInterface[] = [];

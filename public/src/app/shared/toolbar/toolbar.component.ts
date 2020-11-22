@@ -11,17 +11,17 @@ export class ToolbarComponent {
   public fullscreenMode: boolean = false;
   
   constructor(
-    private electronService: ElectronService,
+    private _electronService: ElectronService,
     private question: KoalaQuestionService
   ) {
   }
   
   public minimize() {
-    this.electronService.remote.getCurrentWindow().minimize();
+    this._electronService.remote.getCurrentWindow().minimize();
   }
   
   public resize() {
-    const currentWindow = this.electronService.remote.getCurrentWindow();
+    const currentWindow = this._electronService.remote.getCurrentWindow();
     if (currentWindow.isMaximized()) {
       currentWindow.unmaximize();
       this.fullscreenMode = false;
@@ -34,6 +34,6 @@ export class ToolbarComponent {
   public close() {
     this.question.open({
       message: 'Deseja mesmo sair da aplicação?'
-    }, () => this.electronService.remote.getCurrentWindow().close());
+    }, () => this._electronService.remote.getCurrentWindow().close());
   }
 }
