@@ -5,7 +5,6 @@ import {
 	FormAbstract,
 	KoalaDynamicFormFieldInterface,
 	KoalaDynamicFormService,
-	KoalaFileInterface,
 	KoalaLoaderService,
 	KoalaQuestionService,
 	KoalaRequestService
@@ -164,21 +163,22 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 	}
 	
 	private prepararDadosEnvio() {
-		const data = this.dynamicFormService.emitData(this.formVideo) as any;
-		if (!data.id) data.id = null;
+		const dataVideo = this.dynamicFormService.emitData(this.formVideo) as any;
+		if (!dataVideo.id) dataVideo.id = null;
 		if (!this.video) {
-			const klFiles = data.arquivo as KoalaFileInterface[];
-			data.arquivos = klFiles.map(file => {
+			const klFiles = dataVideo.arquivo as any[];
+			const arquivos = klFiles.map(file => {
 				file.filename = koala('')
 					.string()
 					.random(35, true, true, true)
 					.concat(`.${file.filename.split('.')[1]}`)
 					.getValue();
-				
+				file.video = dataVideo;
 				return file;
 			});
-			delete data.arquivo;
+			delete dataVideo.arquivo;
+			return arquivos;
 		}
-		return data;
+		return dataVideo;
 	}
 }

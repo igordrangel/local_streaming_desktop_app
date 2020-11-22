@@ -4,7 +4,13 @@
 	titleIcon="slideshow"
 	titlePage="Meu Acervo">
 	
-	<nav menu-page>
+	<nav class="nav-video-page" menu-page>
+		<form [formGroup]="formFilter">
+			<koala-dynamic-form
+				[formConfig]="formFilterConfig"
+				[form]="formFilter">
+			</koala-dynamic-form>
+		</form>
 		<koala-button
 			(click)="dialogVideo()"
 			backgroundColor="transparent"
@@ -14,17 +20,24 @@
 		</koala-button>
 	</nav>
 	
-	<section *ngIf="videos$ | async as videos" content>
-		<mat-card *ngFor="let video of videos" class="card-video">
-			<img *ngIf="video.poster | async as poster" [alt]="poster.alt" [src]="poster.src" mat-card-image/>
-			<mat-card-header>
-				<mat-card-title>{{video.tituloOriginal}}</mat-card-title>
-				<mat-card-subtitle>{{categoriaTranslate.translate(video.categoria).name}}</mat-card-subtitle>
-			</mat-card-header>
-			<mat-card-actions align="end">
-				<button (click)="dialogVideo(video)" color="primary" mat-button>Editar</button>
-			</mat-card-actions>
-		</mat-card>
-	</section>
+	<div content>
+		<section *ngIf="videos$ | async as videos else showLoader">
+			<mat-card *ngFor="let video of videos" class="card-video">
+				<img *ngIf="video.poster | async as poster" [alt]="poster.alt" [src]="poster.src" mat-card-image/>
+				<mat-card-header>
+					<mat-card-title>{{video.tituloOriginal}}</mat-card-title>
+					<mat-card-subtitle>{{categoriaTranslate.translate(video.categoria).name}}</mat-card-subtitle>
+				</mat-card-header>
+				<mat-card-actions align="end">
+					<button (click)="dialogVideo(video)" color="primary" mat-button>Editar</button>
+				</mat-card-actions>
+			</mat-card>
+		</section>
+		<ng-template #showLoader>
+			<div class="loader">
+				<mat-spinner color="primary" diameter="60"></mat-spinner>
+			</div>
+		</ng-template>
+	</div>
 	
 </koala-folder-page>

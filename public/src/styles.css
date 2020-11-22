@@ -2,3 +2,15 @@
 html, body { background: #212121;height: 100%; }
 body { font-family: Roboto, 'Helvetica Neue', sans-serif; margin: 0; }
 mat-card-header .mat-card-header-text {width: 100%;}
+nav.nav-video-page .mat-button-disabled,
+nav.nav-video-page input::placeholder,
+nav.nav-video-page .mat-form-field-appearance-outline .mat-form-field-outline {color: #FFFFFF !important;opacity: .6;}
+nav.nav-video-page .mat-select-value,
+nav.nav-video-page .mat-select-arrow,
+nav.nav-video-page .mat-form-field input,
+nav.nav-video-page .mat-form-field textarea,
+nav.nav-video-page .mat-form-field-appearance-outline:not(.mat-form-field-invalid) .mat-form-field-outline-thick,
+nav.nav-video-page .mat-form-field label {caret-color: #FFFFFF !important;color: #FFFFFF !important;}
+nav.nav-video-page .mat-form-field-underline,
+nav.nav-video-page .mat-form-field-appearance-fill .mat-form-field-underline::before,
+nav.nav-video-page .mat-form-field-ripple {background: transparent !important;}

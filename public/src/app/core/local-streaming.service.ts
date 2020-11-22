@@ -23,7 +23,7 @@ export class LocalStreamingService {
     return this.http.delete(this.urlServer + '/video/' + id).toPromise();
   }
   
-  public getLista() {
-    return this.http.get<VideoInterface[]>(this.urlServer + '/videos');
+  public getLista(params: any) {
+    return this.http.get<VideoInterface[]>(this.urlServer + '/videos', {params});
   }
 }

@@ -1,5 +1,8 @@
+nav {display: flex;justify-content: space-between;width: calc(100vw - 230px);}
+nav form {display: block;margin-right: 20px;position: relative;top: -10px;width: 250px;}
 section {box-sizing: border-box;display: flex;flex-wrap: wrap;padding: 0 10px;width: 100%;}
 .card-video {flex-direction: column;margin: 5px;width: calc((100% - 250px) / 6);}
 .card-video:nth-child(6n+1) {margin-left: 0;}
 .card-video:nth-child(6n) {margin-right: 0;}
 .card-video mat-card-header {text-align: center;width: 100%;}
+.loader {align-items: center;display: flex;flex-direction: column;height: calc(100vh - 200px);justify-content: center;width: 100vw;}
