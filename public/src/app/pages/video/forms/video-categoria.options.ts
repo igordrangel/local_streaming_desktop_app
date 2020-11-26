@@ -13,5 +13,6 @@ export const videoCategoriaOptions = koala([
 	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.ficcaoCientifica),
 	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.epico),
 	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.documentario),
-	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.comedia)
+	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.comedia),
+	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.anime)
 ]).array<EnumTranslate>().orderBy('name').getValue()

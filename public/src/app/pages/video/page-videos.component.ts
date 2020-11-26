@@ -7,7 +7,7 @@ import {
 } from "ngx-koala";
 import { DialogFormEnvioVideoComponent } from "./forms/dialog-form-envio-video.component";
 import { LocalStreamingService } from "../../core/local-streaming.service";
-import { switchMap } from "rxjs/operators";
+import { debounceTime, switchMap } from "rxjs/operators";
 import { BehaviorSubject, Observable } from "rxjs";
 import { PosterInterface } from "./poster.interface";
 import { VideoInterface } from "./video.interface";
@@ -42,7 +42,7 @@ export class PageVideosComponent implements OnInit {
 			name: 'tipo',
 			type: DynamicFormTypeFieldEnum.select,
 			appearance: "legacy",
-			class: 'col-4 mr-8',
+			class: 'col-2 mr-8',
 			fieldClass: 'w-100',
 			opcoesSelect: videoTipoOptions,
 			value: VideoTipoEnum.filme,
@@ -51,12 +51,20 @@ export class PageVideosComponent implements OnInit {
 			name: 'categoria',
 			type: DynamicFormTypeFieldEnum.select,
 			appearance: "legacy",
-			class: 'col-7',
+			class: 'col-3 mr-8',
 			fieldClass: 'w-100',
 			opcoesSelect: koala([
 				{name: 'Todos os gêneros', value: ''}
 			]).array<any>().merge(videoCategoriaOptions).getValue(),
 			valueChanges: () => this.videos$ = this.getLista()
+		}, {
+			label: 'Busque por título',
+			name: 'titulo',
+			type: DynamicFormTypeFieldEnum.text,
+			appearance: 'legacy',
+			class: 'col-6',
+			fieldClass: 'w-100',
+			valueChanges: () => this.videos$ = this.getLista().pipe(debounceTime(300))
 		}];
 		setTimeout(() => this.videos$ = this.getLista(), 1);
 	}

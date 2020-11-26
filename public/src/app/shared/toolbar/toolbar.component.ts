@@ -14,6 +14,9 @@ export class ToolbarComponent {
     private _electronService: ElectronService,
     private question: KoalaQuestionService
   ) {
+    if (this._electronService.isElectronApp) {
+      setInterval(() => this.fullscreenMode = this._electronService.remote.getCurrentWindow().isMaximized(), 50);
+    }
   }
   
   public minimize() {
@@ -24,10 +27,8 @@ export class ToolbarComponent {
     const currentWindow = this._electronService.remote.getCurrentWindow();
     if (currentWindow.isMaximized()) {
       currentWindow.unmaximize();
-      this.fullscreenMode = false;
     } else {
       currentWindow.maximize();
-      this.fullscreenMode = true;
     }
   }
   

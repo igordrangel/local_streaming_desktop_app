@@ -39,6 +39,9 @@ export class VideoCategoriaEnumTranslate {
 			case VideoCategoriaEnum.thriller:
 				result.name = 'Thriller';
 				break;
+			case VideoCategoriaEnum.anime:
+				result.name = 'Anime';
+				break;
 		}
 		
 		return result;

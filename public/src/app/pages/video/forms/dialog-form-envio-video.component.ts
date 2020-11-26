@@ -13,10 +13,6 @@ import { videoTipoOptions } from "./video-tipo.options";
 import { videoCategoriaOptions } from "./video-categoria.options";
 import { LocalStreamingService } from "../../../core/local-streaming.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { VideoTipoEnum } from "./enums/video-tipo.enum";
-import { BehaviorSubject } from "rxjs";
-import { KoalaDynamicFormShowFieldInterface } from "ngx-koala/lib/shared/components/form/dynamic-form/interfaces/koala.dynamic-form-show-field.interface";
-import { KlDelay } from "koala-utils/dist/utils/KlDelay";
 import { VideoInterface } from "../video.interface";
 import { koala } from "koala-utils";
 
@@ -26,7 +22,6 @@ import { koala } from "koala-utils";
 export class DialogFormEnvioVideoComponent extends FormAbstract implements OnInit {
 	public formVideo: FormGroup;
 	public formVideoConfig: KoalaDynamicFormFieldInterface[];
-	public showFields = new BehaviorSubject<KoalaDynamicFormShowFieldInterface[]>(null);
 	
 	constructor(
 		private fb: FormBuilder,
@@ -76,20 +71,6 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 			class: 'col-6',
 			fieldClass: 'w-100',
 			opcoesSelect: videoTipoOptions,
-			valueChanges: async (tipo: VideoTipoEnum) => {
-				if (!this.video) {
-					this.showFields.next([
-						{name: 'arquivo', show: false},
-						{name: 'arquivos', show: false}
-					]);
-					await KlDelay.waitFor(5);
-					if (tipo === VideoTipoEnum.filme) {
-						this.showFields.next([{name: 'arquivo', show: true}]);
-					} else {
-						this.showFields.next([{name: 'arquivos', show: true}]);
-					}
-				}
-			},
 			required: true,
 			value: this.video?.tipo
 		}, {
@@ -104,34 +85,59 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 			required: true,
 			value: this.video?.categoria
 		}, {
-			show: false,
-			name: 'arquivo',
-			type: DynamicFormTypeFieldEnum.file,
-			class: 'col-12',
-			fieldClass: 'w-100',
-			fileButtonConfig: {
-				accept: '.mp4, .mkv, .webm',
-				text: 'Anexe seu Filme aqui!',
-				icon: 'movie',
-				color: "white",
-				backgroundColor: "blue"
-			},
-			required: true
-		}, {
-			show: false,
+			label: 'Video',
 			name: 'arquivos',
-			type: DynamicFormTypeFieldEnum.file,
-			class: 'col-12',
-			fieldClass: 'w-100',
-			multiple: true,
-			fileButtonConfig: {
-				accept: '.mp4, .mkv, .webm',
-				text: 'Anexe seus episódios aqui!',
-				icon: 'movie',
-				color: "white",
-				backgroundColor: "blue"
-			},
-			required: true
+			type: DynamicFormTypeFieldEnum.moreItems,
+			moreItemsMinItems: 1,
+			moreItemsMaxItems: 50000,
+			moreItemsButtonIconAddlabel: 'Adicionar Video',
+			moreItemsIcon: 'play_circle',
+			moreItemsConfig: {
+				form: this.fb.group({}),
+				formConfig: [{
+					label: 'Título',
+					name: 'titulo',
+					type: DynamicFormTypeFieldEnum.text,
+					appearance: "outline",
+					floatLabel: "always",
+					class: 'col-6',
+					fieldClass: 'w-100',
+					required: true
+				}, {
+					label: 'Temporada (Caso seja Série)',
+					name: 'temporada',
+					type: DynamicFormTypeFieldEnum.number,
+					appearance: "outline",
+					floatLabel: "always",
+					class: 'col-6',
+					fieldClass: 'w-100',
+					required: false
+				}, {
+					name: 'arquivo',
+					type: DynamicFormTypeFieldEnum.file,
+					class: 'col-6 text-center',
+					fileButtonConfig: {
+						accept: '.mp4, .mkv, .webm',
+						text: 'Anexe seu Filme aqui!',
+						icon: 'movie',
+						color: "white",
+						backgroundColor: "blue"
+					},
+					required: true
+				}, {
+					name: 'legenda',
+					type: DynamicFormTypeFieldEnum.file,
+					class: 'col-6 text-center',
+					fileButtonConfig: {
+						accept: '.srt',
+						text: 'Anexe sua legenda aqui!',
+						icon: 'movie',
+						color: "white",
+						backgroundColor: "blue"
+					},
+					required: false
+				}]
+			}
 		}];
 	}
 	
@@ -166,17 +172,31 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 		const dataVideo = this.dynamicFormService.emitData(this.formVideo) as any;
 		if (!dataVideo.id) dataVideo.id = null;
 		if (!this.video) {
-			const klFiles = dataVideo.arquivo as any[];
-			const arquivos = klFiles.map(file => {
-				file.filename = koala('')
+			const klFiles = dataVideo.arquivos as any[];
+			const arquivos = klFiles.map(arquivoEnvio => {
+				const tmpVideoName = koala('')
 					.string()
 					.random(35, true, true, true)
-					.concat(`.${file.filename.split('.')[1]}`)
 					.getValue();
-				file.video = dataVideo;
-				return file;
+				const arquivo = arquivoEnvio.arquivo[0];
+				arquivoEnvio.filename = koala(tmpVideoName)
+					.string()
+					.concat(`.${arquivo.filename.split('.')[1]}`)
+					.getValue();
+				arquivoEnvio.type = arquivo.type;
+				arquivoEnvio.base64 = arquivo.base64;
+				if (arquivoEnvio.legenda) {
+					const legenda = arquivoEnvio.legenda[0];
+					arquivoEnvio.legendaFilename = koala(tmpVideoName)
+						.string()
+						.concat(`.${legenda.legendaFilename.split('.')[1]}`)
+						.getValue();
+				}
+				delete arquivoEnvio.arquivo;
+				delete arquivoEnvio.legenda;
+				arquivoEnvio.video = dataVideo;
+				return arquivoEnvio;
 			});
-			delete dataVideo.arquivo;
 			return arquivos;
 		}
 		return dataVideo;
