@@ -5,6 +5,7 @@ import {
 	FormAbstract,
 	KoalaDynamicFormFieldInterface,
 	KoalaDynamicFormService,
+	KoalaDynamicSetValueInterface,
 	KoalaLoaderService,
 	KoalaQuestionService,
 	KoalaRequestService
@@ -15,6 +16,7 @@ import { LocalStreamingService } from "../../../core/local-streaming.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { VideoInterface } from "../video.interface";
 import { koala } from "koala-utils";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
 	templateUrl: 'dialog-form-envio-video.component.html'
@@ -22,6 +24,7 @@ import { koala } from "koala-utils";
 export class DialogFormEnvioVideoComponent extends FormAbstract implements OnInit {
 	public formVideo: FormGroup;
 	public formVideoConfig: KoalaDynamicFormFieldInterface[];
+	public setValuesVideo = new BehaviorSubject<BehaviorSubject<KoalaDynamicSetValueInterface[]>[]>([]);
 	
 	constructor(
 		private fb: FormBuilder,
@@ -95,6 +98,9 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 			moreItemsConfig: {
 				form: this.fb.group({}),
 				formConfig: [{
+					name: 'id',
+					type: DynamicFormTypeFieldEnum.id
+				}, {
 					label: 'Título',
 					name: 'titulo',
 					type: DynamicFormTypeFieldEnum.text,
@@ -136,16 +142,29 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 						backgroundColor: "blue"
 					},
 					required: false
-				}]
+				}],
+				setValues: this.setValuesVideo
 			}
 		}];
+		
+		if (this.video) {
+			const videos: KoalaDynamicSetValueInterface[][] = [];
+			this.video.arquivos.forEach(arquivo => {
+				videos.push([
+					{name: 'id', value: arquivo.id},
+					{name: 'titulo', value: arquivo.titulo},
+					{name: 'temporada', value: arquivo.temporada}
+				]);
+			});
+			this.dynamicFormService.setValuesInMoreItemsForm(this.setValuesVideo, videos);
+		}
 	}
 	
 	public async enviar() {
 		this.loading(true);
 		await this.requestService
 		          .request(this.video?.id ?
-			          this.localStreamingService.editar(this.video.id, this.prepararDadosEnvio()) :
+			          this.localStreamingService.editar(this.prepararDadosEnvio()) :
 			          this.localStreamingService.novoVideo(this.prepararDadosEnvio()),
 			          () => {
 				          this.dialogRef.close('reloadList');
@@ -171,9 +190,9 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 	private prepararDadosEnvio() {
 		const dataVideo = this.dynamicFormService.emitData(this.formVideo) as any;
 		if (!dataVideo.id) dataVideo.id = null;
-		if (!this.video) {
-			const klFiles = dataVideo.arquivos as any[];
-			const arquivos = klFiles.map(arquivoEnvio => {
+		const klFiles = dataVideo.arquivos as any[];
+		const arquivos = klFiles.map(arquivoEnvio => {
+			if (arquivoEnvio.arquivo) {
 				const tmpVideoName = koala('')
 					.string()
 					.random(35, true, true, true)
@@ -191,14 +210,15 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 						.string()
 						.concat(`.${legenda.legendaFilename.split('.')[1]}`)
 						.getValue();
+					arquivoEnvio.legendaBase64 = legenda.base64;
 				}
-				delete arquivoEnvio.arquivo;
-				delete arquivoEnvio.legenda;
-				arquivoEnvio.video = dataVideo;
-				return arquivoEnvio;
-			});
-			return arquivos;
-		}
-		return dataVideo;
+			}
+			delete arquivoEnvio.arquivo;
+			delete arquivoEnvio.legenda;
+			delete dataVideo.arquivos;
+			arquivoEnvio.video = dataVideo;
+			return arquivoEnvio;
+		});
+		return arquivos;
 	}
 }
