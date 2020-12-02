@@ -41,10 +41,6 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 	ngOnInit() {
 		this.formVideo = this.fb.group({});
 		this.formVideoConfig = [{
-			name: 'id',
-			type: DynamicFormTypeFieldEnum.id,
-			value: this.video?.id ?? null
-		}, {
 			label: 'Título Original',
 			name: 'tituloOriginal',
 			type: DynamicFormTypeFieldEnum.text,
@@ -93,7 +89,7 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 		this.loading(true);
 		await this.requestService
 		          .request(this.video?.id ?
-			          this.localStreamingService.editar(this.prepararDadosEnvio()) :
+			          this.localStreamingService.editar(this.video?.id, this.prepararDadosEnvio()) :
 			          this.localStreamingService.novoVideo(this.prepararDadosEnvio()),
 			          () => {
 				          this.dialogRef.close('reloadList');

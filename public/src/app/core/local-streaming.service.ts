@@ -19,8 +19,8 @@ export class LocalStreamingService {
     return this.http.post(IpServer.getHost() + '/video', data).toPromise();
   }
   
-  public editar(data: any) {
-    return this.http.put(IpServer.getHost() + '/video', data).toPromise();
+  public editar(id: number, data: any) {
+    return this.http.put(IpServer.getHost() + '/video/' + id, data).toPromise();
   }
   
   public excluir(id: number) {
