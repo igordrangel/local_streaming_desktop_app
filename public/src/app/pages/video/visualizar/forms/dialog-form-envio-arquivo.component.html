@@ -1,0 +1,34 @@
+<form (ngSubmit)="enviar()" [formGroup]="formArquivo">
+	<koala-dialog
+		[iconTitleDialog]="data.arquivo ? 'edit' : 'add_circle'"
+		[titleDialog]="data.arquivo ? 'Editar Arquivo' : 'Adicionar Arquivo'"
+		btnCloseColor="warn"
+		btnCloseLabel="Fechar">
+		
+		<div dialog-content>
+			<koala-dynamic-form
+				[formConfig]="formArquivoConfig"
+				[form]="formArquivo">
+			</koala-dynamic-form>
+		</div>
+		
+		<div dialog-actions>
+			<button
+				(click)="excluir()"
+				*ngIf="data.arquivo"
+				class="mr-8"
+				color="warn"
+				mat-raised-button
+				type="button">
+				Excluir
+			</button>
+			<koala-submit
+				[btnLabel]="btnLabel"
+				[btnSubmitDisabled]="btnSubmitDisabled"
+				[fg]="formArquivo"
+				[loader]="loader">
+			</koala-submit>
+		</div>
+		
+	</koala-dialog>
+</form>

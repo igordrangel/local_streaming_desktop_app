@@ -29,6 +29,7 @@
 					<mat-card-subtitle>{{categoriaTranslate.translate(video.categoria).name}}</mat-card-subtitle>
 				</mat-card-header>
 				<mat-card-actions align="end">
+					<a [routerLink]="'/video/'+video.id" color="primary" mat-button>Visualizar</a>
 					<button (click)="dialogVideo(video)" color="primary" mat-button>Editar</button>
 				</mat-card-actions>
 			</mat-card>

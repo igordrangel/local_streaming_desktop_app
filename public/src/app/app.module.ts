@@ -22,12 +22,16 @@ import { PageVideosComponent } from "./pages/video/page-videos.component";
 import { NgxElectronModule } from "ngx-electron";
 import { DialogFormEnvioVideoComponent } from "./pages/video/forms/dialog-form-envio-video.component";
 import { MatCardModule } from "@angular/material/card";
+import { VideoComponent } from "./pages/video/visualizar/video.component";
+import { DialogFormEnvioArquivoComponent } from "./pages/video/visualizar/forms/dialog-form-envio-arquivo.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     PageVideosComponent,
-    DialogFormEnvioVideoComponent
+    VideoComponent,
+    DialogFormEnvioVideoComponent,
+    DialogFormEnvioArquivoComponent
   ],
   imports: [
     BrowserModule,

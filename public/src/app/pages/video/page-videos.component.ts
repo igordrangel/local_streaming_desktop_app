@@ -17,6 +17,7 @@ import { videoTipoOptions } from "./forms/video-tipo.options";
 import { videoCategoriaOptions } from "./forms/video-categoria.options";
 import { VideoTipoEnum } from "./forms/enums/video-tipo.enum";
 import { koala } from "koala-utils";
+import { IpServer } from "../../shared/ip/ip-server";
 
 @Component({
 	templateUrl: 'page-videos.component.html',
@@ -62,9 +63,21 @@ export class PageVideosComponent implements OnInit {
 			name: 'titulo',
 			type: DynamicFormTypeFieldEnum.text,
 			appearance: 'legacy',
-			class: 'col-6',
+			class: 'col-2',
 			fieldClass: 'w-100',
 			valueChanges: () => this.videos$ = this.getLista().pipe(debounceTime(300))
+		}, {
+			label: 'Informe o IP de sua rede interna',
+			name: 'ip',
+			type: DynamicFormTypeFieldEnum.text,
+			appearance: 'legacy',
+			class: 'col-4',
+			fieldClass: 'w-100',
+			value: IpServer.getIp(),
+			valueChanges: (ip: string) => {
+				IpServer.setIp(ip);
+				this.videos$ = this.getLista().pipe(debounceTime(300));
+			}
 		}];
 		setTimeout(() => this.videos$ = this.getLista(), 1);
 	}
