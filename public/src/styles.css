@@ -14,3 +14,6 @@ nav.nav-video-page .mat-form-field label {caret-color: #FFFFFF !important;color:
 nav.nav-video-page .mat-form-field-underline,
 nav.nav-video-page .mat-form-field-appearance-fill .mat-form-field-underline::before,
 nav.nav-video-page .mat-form-field-ripple {background: transparent !important;}
+.progress {padding: 30px;text-align: center;}
+.progress h2 {color: #143C5D;font-family: 'Josefin Sans', sans-serif;}
+.progress mat-progress-bar {border-radius: 10px;height: 10px;}

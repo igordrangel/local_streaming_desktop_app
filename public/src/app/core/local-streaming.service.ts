@@ -31,6 +31,17 @@ export class LocalStreamingService {
     return this.http.get<VideoInterface[]>(IpServer.getHost() + '/videos', {params});
   }
   
+  public uploadVideo(file: File) {
+    const formData: FormData = new FormData();
+    formData.append('video', file, file.name);
+    return this.http.post(
+      IpServer.getHost() + '/video/arquivo/upload',
+      formData, {
+        reportProgress: true,
+        observe: 'events'
+      });
+  }
+  
   public addArquivo(idVideo: number, data: any) {
     return this.http.post(IpServer.getHost() + '/video/' + idVideo + '/arquivo', data).toPromise();
   }

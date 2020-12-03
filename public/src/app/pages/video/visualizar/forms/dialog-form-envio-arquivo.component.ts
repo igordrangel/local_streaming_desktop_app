@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild } from "@angular/core";
 import {
 	DynamicFormTypeFieldEnum,
 	FormAbstract,
@@ -8,18 +8,26 @@ import {
 	KoalaQuestionService,
 	KoalaRequestService
 } from "ngx-koala";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { VideoArquivoInterface } from "../../video-arquivo.interface";
 import { LocalStreamingService } from "../../../../core/local-streaming.service";
 import { koala } from "koala-utils";
+import { MatStepper } from "@angular/material/stepper";
+import { map } from "rxjs/operators";
+import { HttpEventType } from "@angular/common/http";
 
 @Component({
 	templateUrl: 'dialog-form-envio-arquivo.component.html'
 })
 export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnInit {
+	public formFile: FormGroup;
+	public progressFileSend: number;
+	
 	public formArquivo: FormGroup;
 	public formArquivoConfig: KoalaDynamicFormFieldInterface[];
+	
+	@ViewChild('stepper', {static: true}) public stepperRef: MatStepper
 	
 	constructor(
 		private fb: FormBuilder,
@@ -38,6 +46,37 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 	}
 	
 	ngOnInit() {
+		this.formFile = this.fb.group({
+			videoFile: ['', Validators.required],
+			videoInfo: ['', Validators.required]
+		});
+		this.formFile
+		    .get('videoFile')
+		    .valueChanges
+		    .subscribe(async (file?: File) => {
+			    if (file) {
+				    this.localStreamingService
+				        .uploadVideo(file)
+				        .pipe(
+					        map((event: any) => {
+						        switch (event.type) {
+							        case HttpEventType.UploadProgress:
+								        this.progressFileSend = Math.round(event.loaded * 100 / event.total);
+								        break;
+							        case HttpEventType.Response:
+								        return event;
+						        }
+					        })
+				        )
+				        .subscribe((event: any) => {
+					        if (event?.body) {
+						        this.formFile.get('videoInfo').setValue(event.body.data);
+						        this.stepperRef.next();
+					        }
+				        });
+			    }
+		    });
+		
 		this.formArquivo = this.fb.group({});
 		this.formArquivoConfig = [{
 			label: 'Nome',
@@ -60,30 +99,22 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 			required: false,
 			value: this.data.arquivo?.temporada
 		}, {
-			name: 'arquivo',
-			type: DynamicFormTypeFieldEnum.file,
-			class: 'col-6 text-center',
-			fileButtonConfig: {
-				accept: '.mp4, .mkv, .webm',
-				text: 'Anexe seu Filme aqui!',
-				icon: 'movie',
-				color: "white",
-				backgroundColor: "blue"
-			},
-			required: true
-		}, {
 			name: 'legenda',
 			type: DynamicFormTypeFieldEnum.file,
-			class: 'col-6 text-center',
+			class: 'col-12',
 			fileButtonConfig: {
 				accept: '.srt',
 				text: 'Anexe sua legenda aqui!',
-				icon: 'movie',
+				icon: 'subtitles',
 				color: "white",
 				backgroundColor: "blue"
 			},
 			required: false
-		}]
+		}];
+		
+		if (this.data.arquivo) {
+			this.stepperRef.next();
+		}
 	}
 	
 	public async enviar() {
@@ -116,29 +147,38 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 	
 	private prepararDadosParaEnvio() {
 		const arquivoEnvio = this.dynamicFormService.emitData(this.formArquivo) as any;
-		if (arquivoEnvio.arquivo) {
-			const tmpVideoName = koala('')
-				.string()
-				.random(35, true, true, true)
-				.getValue();
-			const arquivo = arquivoEnvio.arquivo[0];
+		
+		const tmpVideoName = koala('')
+			.string()
+			.random(35, true, true, true)
+			.getValue();
+		
+		const dataFormFile = this.formFile.getRawValue() as any;
+		const videoFile = dataFormFile.videoFile as File;
+		const videoInfo = dataFormFile.videoInfo;
+		
+		if (videoInfo) {
+			const arrFilename = videoFile.name.split('.');
 			arquivoEnvio.filename = koala(tmpVideoName)
 				.string()
-				.concat(`.${arquivo.filename.split('.')[1]}`)
+				.concat(`.${arrFilename[arrFilename.length - 1]}`)
 				.getValue();
-			arquivoEnvio.type = arquivo.type;
-			arquivoEnvio.base64 = arquivo.base64;
-			if (arquivoEnvio.legenda) {
-				const legenda = arquivoEnvio.legenda[0];
-				arquivoEnvio.legendaFilename = koala(tmpVideoName)
-					.string()
-					.concat(`.${legenda.legendaFilename.split('.')[1]}`)
-					.getValue();
-				arquivoEnvio.legendaBase64 = legenda.base64;
-			}
+			arquivoEnvio.tmpFilename = videoInfo.filename;
+			arquivoEnvio.type = videoInfo.type;
+		}
+		
+		if (arquivoEnvio.legenda) {
+			const legenda = arquivoEnvio.legenda[0];
+			const arrFilenameLegenda = legenda.filename.split('.');
+			arquivoEnvio.legendaFilename = koala(tmpVideoName)
+				.string()
+				.concat(`.${arrFilenameLegenda[arrFilenameLegenda.length - 1]}`)
+				.getValue();
+			arquivoEnvio.legendaBase64 = legenda.base64;
 		}
 		delete arquivoEnvio.arquivo;
 		delete arquivoEnvio.legenda;
+		if (!arquivoEnvio.temporada) delete arquivoEnvio.temporada;
 		
 		return arquivoEnvio;
 	}

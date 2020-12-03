@@ -35,7 +35,7 @@
 				</koala-button>
 			</nav>
 			<mat-action-list *ngFor="let item of getListaArquivos()">
-				<h3 class="temporada" mat-subheader>{{item.temporada}}ª Temporada</h3>
+				<h3 *ngIf="item.temporada" class="temporada" mat-subheader>{{item.temporada}}ª Temporada</h3>
 				<mat-list-item (click)="dialogArquivo(arquivo)" *ngFor="let arquivo of item.arquivos">
 					<mat-icon mat-list-icon>play_circle</mat-icon>
 					<h4 mat-line>{{arquivo.titulo}}</h4>

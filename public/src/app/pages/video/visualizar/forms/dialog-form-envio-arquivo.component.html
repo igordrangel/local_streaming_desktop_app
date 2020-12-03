@@ -1,34 +1,61 @@
-<form (ngSubmit)="enviar()" [formGroup]="formArquivo">
-	<koala-dialog
-		[iconTitleDialog]="data.arquivo ? 'edit' : 'add_circle'"
-		[titleDialog]="data.arquivo ? 'Editar Arquivo' : 'Adicionar Arquivo'"
-		btnCloseColor="warn"
-		btnCloseLabel="Fechar">
-		
-		<div dialog-content>
-			<koala-dynamic-form
-				[formConfig]="formArquivoConfig"
-				[form]="formArquivo">
-			</koala-dynamic-form>
-		</div>
-		
-		<div dialog-actions>
-			<button
-				(click)="excluir()"
-				*ngIf="data.arquivo"
-				class="mr-8"
-				color="warn"
-				mat-raised-button
-				type="button">
-				Excluir
-			</button>
-			<koala-submit
-				[btnLabel]="btnLabel"
-				[btnSubmitDisabled]="btnSubmitDisabled"
-				[fg]="formArquivo"
-				[loader]="loader">
-			</koala-submit>
-		</div>
-		
-	</koala-dialog>
-</form>
+<koala-dialog
+	[iconTitleDialog]="data.arquivo ? 'edit' : 'add_circle'"
+	[titleDialog]="data.arquivo ? 'Editar Arquivo' : 'Adicionar Arquivo'"
+	btnCloseColor="warn"
+	btnCloseLabel="Fechar">
+	
+	<div dialog-content>
+		<mat-vertical-stepper #stepper [linear]="!data.arquivo">
+			<mat-step [stepControl]="formFile">
+				<ng-template matStepLabel>Informe os dados do Vídeo</ng-template>
+				<form [formGroup]="formFile">
+					<input #file (change)="formFile.get('videoFile').setValue(file.files.item(0))" accept=".mp4, .mkv, .webm"
+					       class="d-none" type="file"/>
+					<koala-button
+						(click)="file.click()"
+						*ngIf="!progressFileSend"
+						[text]="formFile.get('videoFile').value ? formFile.get('videoFile').value.name : 'Anexe seu vídeo aqui'"
+						backgroundColor="blue"
+						color="white"
+						icon="play_circle">
+					</koala-button>
+					<div *ngIf="progressFileSend" class="progress">
+						<h2>{{progressFileSend}}%</h2>
+						<mat-progress-bar [value]="progressFileSend" color="primary" mode="buffer"></mat-progress-bar>
+					</div>
+				</form>
+			</mat-step>
+			<mat-step [stepControl]="formArquivo">
+				<ng-template matStepLabel>Informe os dados do Vídeo</ng-template>
+				<form (ngSubmit)="enviar()" [formGroup]="formArquivo">
+					<koala-dynamic-form
+						[formConfig]="formArquivoConfig"
+						[form]="formArquivo">
+					</koala-dynamic-form>
+					
+					<div align="end" class="mt-15">
+						<koala-submit
+							[btnLabel]="btnLabel"
+							[btnSubmitDisabled]="btnSubmitDisabled"
+							[fg]="formArquivo"
+							[loader]="loader">
+						</koala-submit>
+					</div>
+				</form>
+			</mat-step>
+		</mat-vertical-stepper>
+	</div>
+	
+	<div dialog-actions>
+		<button
+			(click)="excluir()"
+			*ngIf="data.arquivo"
+			class="mr-8"
+			color="warn"
+			mat-raised-button
+			type="button">
+			Excluir
+		</button>
+	</div>
+	
+</koala-dialog>

@@ -36,10 +36,6 @@ app.on('ready', async () => {
 		mainWindow.show();
 	});
 	
-	await mainWindow.webContents.session.clearStorageData({
-		storages: ['localStorage']
-	});
-	
 	mainWindow.on('closed', () => {
 		mainWindow = null
 	});

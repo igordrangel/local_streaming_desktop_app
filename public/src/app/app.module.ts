@@ -24,6 +24,8 @@ import { DialogFormEnvioVideoComponent } from "./pages/video/forms/dialog-form-e
 import { MatCardModule } from "@angular/material/card";
 import { VideoComponent } from "./pages/video/visualizar/video.component";
 import { DialogFormEnvioArquivoComponent } from "./pages/video/visualizar/forms/dialog-form-envio-arquivo.component";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { DialogFormEnvioArquivoComponent } from "./pages/video/visualizar/forms/
     KoalaButtonModule,
     KoalaFormModule,
     MatCardModule,
+    MatStepperModule,
+    MatProgressBarModule,
     AppRoutingModule
   ],
   providers: [
