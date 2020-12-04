@@ -7,7 +7,7 @@
 	<div dialog-content>
 		<mat-vertical-stepper #stepper [linear]="!data.arquivo">
 			<mat-step [stepControl]="formFile">
-				<ng-template matStepLabel>Informe os dados do Vídeo</ng-template>
+				<ng-template matStepLabel>Anexe um Vídeo</ng-template>
 				<form [formGroup]="formFile">
 					<input #file (change)="formFile.get('videoFile').setValue(file.files.item(0))" accept=".mp4, .mkv, .webm"
 					       class="d-none" type="file"/>

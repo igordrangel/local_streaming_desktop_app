@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { VideoInterface } from "../video.interface";
 import { LocalStreamingService } from "../../../core/local-streaming.service";
 import { ActivatedRoute } from "@angular/router";
@@ -22,11 +22,9 @@ interface ListaArquivos {
 	styleUrls: ['video.component.css']
 })
 export class VideoComponent implements OnInit {
-	public video$: Observable<VideoInterface>;
+	public video$ = new BehaviorSubject<VideoInterface>(null);
 	public videoTipo = VideoTipoEnum;
 	public videoCategoriaTranslate = VideoCategoriaEnumTranslate;
-	
-	private video: VideoInterface;
 	
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -47,9 +45,9 @@ export class VideoComponent implements OnInit {
 		this.dialog.open(
 			DialogFormEnvioVideoComponent,
 			'normal',
-			this.video,
+			this.video$.getValue(),
 			'reloadList',
-			() => this.loadVideo(this.video.id)
+			() => this.loadVideo(this.video$.getValue().id)
 		);
 	}
 	
@@ -58,16 +56,16 @@ export class VideoComponent implements OnInit {
 			DialogFormEnvioArquivoComponent,
 			'normal',
 			{
-				idVideo: this.video.id,
+				idVideo: this.video$.getValue().id,
 				arquivo
 			},
 			'reload',
-			() => this.loadVideo(this.video.id)
+			() => this.loadVideo(this.video$.getValue().id)
 		);
 	}
 	
 	public getListaArquivos(): ListaArquivos[] {
-		return koala(this.video.arquivos)
+		return koala(this.video$.getValue().arquivos)
 			.array<VideoArquivoInterface>()
 			.pipe(klArray => {
 				const listaArquivos: ListaArquivos[] = [];
@@ -91,10 +89,10 @@ export class VideoComponent implements OnInit {
 	}
 	
 	private async loadVideo(id: number) {
-		this.video = null;
-		this.video$ = null;
-		await KlDelay.waitFor(300);
-		this.video$ = this.localStreamingService.getPorId(id);
-		this.video$.subscribe(video => this.video = video);
+		this.video$.next(null);
+		await KlDelay.waitFor(50);
+		this.localStreamingService
+		    .getPorId(id)
+		    .subscribe(video => this.video$.next(video));
 	}
 }

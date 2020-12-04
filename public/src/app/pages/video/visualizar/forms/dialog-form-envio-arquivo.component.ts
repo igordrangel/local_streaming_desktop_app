@@ -27,7 +27,7 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 	public formArquivo: FormGroup;
 	public formArquivoConfig: KoalaDynamicFormFieldInterface[];
 	
-	@ViewChild('stepper', {static: true}) public stepperRef: MatStepper
+	@ViewChild('stepper', {static: true}) public stepperRef: MatStepper;
 	
 	constructor(
 		private fb: FormBuilder,
@@ -79,6 +79,7 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 		
 		this.formArquivo = this.fb.group({});
 		this.formArquivoConfig = [{
+			focus: !!this.data?.arquivo,
 			label: 'Nome',
 			name: 'titulo',
 			type: DynamicFormTypeFieldEnum.text,
@@ -113,12 +114,12 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 		}];
 		
 		if (this.data.arquivo) {
-			this.stepperRef.next();
+			setTimeout(() => this.stepperRef.next(), 300);
 		}
 	}
 	
 	public async enviar() {
-		this.loading(true);
+		this.loading(true, 'Enviando Video, isto pode levar alguns minutos...');
 		const data = this.prepararDadosParaEnvio();
 		await this.requestService
 		          .request(this.data.arquivo ?
