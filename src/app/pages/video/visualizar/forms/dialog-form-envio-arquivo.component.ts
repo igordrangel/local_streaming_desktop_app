@@ -119,7 +119,7 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 	}
 	
 	public async enviar() {
-		this.loading(true, 'Enviando vídeo, isto pode levar alguns minutos...');
+		this.loading(true, 'Enviando vídeo, isto pode levar vários minutos...');
 		const data = this.prepararDadosParaEnvio();
 		await this.requestService
 		          .request(this.data.arquivo ?

@@ -94,7 +94,17 @@ export class PageVideosComponent implements OnInit {
 	
 	private getLista() {
 		return this.localStreamingService
-		           .getLista(this.dynamicFormService.emitData(this.formFilter))
+		           .getLista(
+			           koala(this.dynamicFormService.emitData(this.formFilter))
+				           .object()
+				           .merge({
+					           order: 'e.id',
+					           sort: 'DESC',
+					           page: 0,
+					           limit: 100
+				           })
+				           .getValue()
+		           )
 		           .pipe(switchMap(videos => {
 			           return new Observable<VideoInterface[]>(observe => {
 				           videos.map(video => {
