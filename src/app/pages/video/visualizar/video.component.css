@@ -1,6 +1,6 @@
 .loader {align-items: center;display: flex;flex-direction: column;height: calc(100vh - 200px);justify-content: center;width: 100vw;}
 .nav-menu-arquivos {align-items: center;display: flex;justify-content: flex-start;}
 .nav-menu-arquivos h2 {color: rgba(255, 255, 255, .6);font-family: 'Josefin Sans', sans-serif;font-weight: bold;margin: 0;padding: 0 20px;}
-mat-action-list {padding: 20px 5px;}
+.playlist {display: block;overflow: auto;height: calc(100vh - 128px);padding: 0 15px 15px;margin-top: 15px;box-sizing: border-box;}
 .temporada {color: rgba(255, 255, 255, .56);}
 mat-list-item {color: #FFFFFF !important;}

@@ -26,17 +26,17 @@ import { IpServer } from "../../shared/ip/ip-server";
 export class PageVideosComponent implements OnInit {
 	public formFilter: FormGroup;
 	public formFilterConfig: KoalaDynamicFormFieldInterface[];
-	
+
 	public categoriaTranslate = VideoCategoriaEnumTranslate;
 	public videos$: Observable<VideoInterface[]>;
-	
+
 	constructor(
 		private fb: FormBuilder,
 		private dialog: KoalaDialogService,
 		private dynamicFormService: KoalaDynamicFormService,
 		private localStreamingService: LocalStreamingService
 	) {}
-	
+
 	ngOnInit() {
 		this.formFilter = this.fb.group({});
 		this.formFilterConfig = [{
@@ -81,7 +81,7 @@ export class PageVideosComponent implements OnInit {
 		}];
 		setTimeout(() => this.videos$ = this.getLista(), 1);
 	}
-	
+
 	public dialogVideo(video?: VideoInterface) {
 		this.dialog.open(
 			DialogFormEnvioVideoComponent,
@@ -91,15 +91,15 @@ export class PageVideosComponent implements OnInit {
 			() => this.videos$ = this.getLista()
 		);
 	}
-	
+
 	private getLista() {
 		return this.localStreamingService
 		           .getLista(
 			           koala(this.dynamicFormService.emitData(this.formFilter))
 				           .object()
 				           .merge({
-					           order: 'e.id',
-					           sort: 'DESC',
+                     sort: 'e.id',
+					           order: 'DESC',
 					           page: 0,
 					           limit: 100
 				           })

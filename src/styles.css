@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 html, body { background: #212121;height: 100%; }
 body { font-family: Roboto, 'Helvetica Neue', sans-serif; margin: 0; }
+koala-folder-page .content {height: calc(100vh - 66px)!important;}
 mat-card-header .mat-card-header-text {width: 100%;}
 nav.nav-video-page .mat-button-disabled,
 nav.nav-video-page input::placeholder,
@@ -17,3 +18,8 @@ nav.nav-video-page .mat-form-field-ripple {background: transparent !important;}
 .progress {padding: 30px;text-align: center;}
 .progress h2 {color: #143C5D;font-family: 'Josefin Sans', sans-serif;}
 .progress mat-progress-bar {border-radius: 10px;height: 10px;}
+.mat-expansion-panel,
+.mat-expansion-panel:not(.mat-expanded):not([aria-disabled=true]) .mat-expansion-panel-header:hover {background: rgba(0,0,0,.3)!important;box-shadow: none!important;}
+.mat-expansion-panel-header-title {color: rgba(255, 255, 255, .56);}
+.mat-expansion-indicator:after {color: #fff;}
+.mat-expansion-panel-body {padding: 0!important;margin: 0!important;}

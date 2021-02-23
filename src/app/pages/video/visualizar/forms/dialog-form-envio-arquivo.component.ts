@@ -23,12 +23,12 @@ import { HttpEventType } from "@angular/common/http";
 export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnInit {
 	public formFile: FormGroup;
 	public progressFileSend: number;
-	
+
 	public formArquivo: FormGroup;
 	public formArquivoConfig: KoalaDynamicFormFieldInterface[];
-	
+
 	@ViewChild('stepper', {static: true}) public stepperRef: MatStepper;
-	
+
 	constructor(
 		private fb: FormBuilder,
 		private dynamicFormService: KoalaDynamicFormService,
@@ -44,7 +44,7 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 	) {
 		super(() => this.formArquivo);
 	}
-	
+
 	ngOnInit() {
 		this.formFile = this.fb.group({
 			videoFile: ['', Validators.required],
@@ -76,7 +76,7 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 				        });
 			    }
 		    });
-		
+
 		this.formArquivo = this.fb.group({});
 		this.formArquivoConfig = [{
 			focus: !!this.data?.arquivo,
@@ -112,12 +112,12 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 			},
 			required: false
 		}];
-		
+
 		if (this.data.arquivo) {
 			setTimeout(() => this.stepperRef.next(), 300);
 		}
 	}
-	
+
 	public async enviar() {
 		this.loading(true, 'Enviando vídeo, isto pode levar vários minutos...');
 		const data = this.prepararDadosParaEnvio();
@@ -130,7 +130,7 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 				          this.dialogRef.close('reload')
 			          }, () => this.loading(false));
 	}
-	
+
 	public excluir() {
 		this.question.open({
 			message: 'Deseja mesmo excluir este arquivo?'
@@ -145,19 +145,19 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 				          }, () => this.loaderService.dismiss());
 		});
 	}
-	
+
 	private prepararDadosParaEnvio() {
 		const arquivoEnvio = this.dynamicFormService.emitData(this.formArquivo) as any;
-		
+
 		const tmpVideoName = koala('')
 			.string()
 			.random(35, true, true, true)
 			.getValue();
-		
+
 		const dataFormFile = this.formFile.getRawValue() as any;
 		const videoFile = dataFormFile.videoFile as File;
 		const videoInfo = dataFormFile.videoInfo;
-		
+
 		if (videoInfo) {
 			const arrFilename = videoFile.name.split('.');
 			arquivoEnvio.filename = koala(tmpVideoName)
@@ -167,7 +167,7 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 			arquivoEnvio.tmpFilename = videoInfo.filename;
 			arquivoEnvio.type = videoInfo.type;
 		}
-		
+
 		if (arquivoEnvio.legenda) {
 			const legenda = arquivoEnvio.legenda[0];
 			const arrFilenameLegenda = legenda.filename.split('.');
@@ -180,7 +180,7 @@ export class DialogFormEnvioArquivoComponent extends FormAbstract implements OnI
 		delete arquivoEnvio.arquivo;
 		delete arquivoEnvio.legenda;
 		if (!arquivoEnvio.temporada) delete arquivoEnvio.temporada;
-		
+
 		return arquivoEnvio;
 	}
 }

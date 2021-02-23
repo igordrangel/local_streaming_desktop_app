@@ -25,13 +25,14 @@ export class VideoComponent implements OnInit {
 	public video$ = new BehaviorSubject<VideoInterface>(null);
 	public videoTipo = VideoTipoEnum;
 	public videoCategoriaTranslate = VideoCategoriaEnumTranslate;
-	
+  public playlist: ListaArquivos[];
+
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private localStreamingService: LocalStreamingService,
 		private dialog: KoalaDialogService
 	) {}
-	
+
 	ngOnInit() {
 		this.activatedRoute
 		    .params
@@ -40,7 +41,7 @@ export class VideoComponent implements OnInit {
 			    if (id) await this.loadVideo(id);
 		    });
 	}
-	
+
 	public editar() {
 		this.dialog.open(
 			DialogFormEnvioVideoComponent,
@@ -50,7 +51,7 @@ export class VideoComponent implements OnInit {
 			() => this.loadVideo(this.video$.getValue().id)
 		);
 	}
-	
+
 	public dialogArquivo(arquivo?: VideoArquivoInterface) {
 		this.dialog.open(
 			DialogFormEnvioArquivoComponent,
@@ -63,36 +64,47 @@ export class VideoComponent implements OnInit {
 			() => this.loadVideo(this.video$.getValue().id)
 		);
 	}
-	
-	public getListaArquivos(): ListaArquivos[] {
-		return koala(this.video$.getValue().arquivos)
-			.array<VideoArquivoInterface>()
-			.pipe(klArray => {
-				const listaArquivos: ListaArquivos[] = [];
-				
-				klArray.getValue().forEach(arquivo => {
-					const index = koala(listaArquivos).array<ListaArquivos>().getIndex('temporada', arquivo.temporada);
-					if (index >= 0) {
-						listaArquivos[index].arquivos.push(arquivo);
-					} else {
-						listaArquivos.push({
-							temporada: arquivo.temporada,
-							arquivos: [arquivo]
-						})
-					}
-				});
-				
-				return listaArquivos;
-			})
-			.orderBy('temporada')
-			.getValue();
-	}
-	
+
 	private async loadVideo(id: number) {
 		this.video$.next(null);
 		await KlDelay.waitFor(50);
 		this.localStreamingService
 		    .getPorId(id)
-		    .subscribe(video => this.video$.next(video));
+		    .subscribe(video => {
+          this.video$.next(video);
+          this.setPlaylist();
+        });
 	}
+
+  private setPlaylist() {
+    this.playlist = [];
+    setTimeout(() => {
+      this.playlist = koala(this.video$.getValue()?.arquivos ?? [])
+        .array<VideoArquivoInterface>()
+        .pipe(klArray => {
+          let listaArquivos: ListaArquivos[] = [];
+
+          klArray.getValue().forEach(arquivo => {
+            const index = koala(listaArquivos).array<ListaArquivos>().getIndex('temporada', arquivo.temporada);
+            if (index >= 0) {
+              listaArquivos[index].arquivos.push(arquivo);
+            } else {
+              listaArquivos.push({
+                temporada: arquivo.temporada,
+                arquivos: [arquivo]
+              });
+            }
+          });
+
+          listaArquivos = listaArquivos.map(itemArquivo => {
+            itemArquivo.arquivos = koala(itemArquivo.arquivos).array<VideoArquivoInterface>().orderBy('titulo').getValue();
+            return itemArquivo;
+          });
+
+          return listaArquivos;
+        })
+        .orderBy('temporada')
+        .getValue();
+    }, 50);
+  }
 }

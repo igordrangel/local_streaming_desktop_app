@@ -26,6 +26,8 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { environment } from '../environments/environment';
     KoalaFormModule,
     MatCardModule,
     MatStepperModule,
+    MatExpansionModule,
+    MatListModule,
     MatProgressBarModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
