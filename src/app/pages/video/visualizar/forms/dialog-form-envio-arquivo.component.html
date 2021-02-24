@@ -3,13 +3,13 @@
 	[titleDialog]="data.arquivo ? 'Editar Arquivo' : 'Adicionar Arquivo'"
 	btnCloseColor="warn"
 	btnCloseLabel="Fechar">
-	
+
 	<div dialog-content>
 		<mat-vertical-stepper #stepper [linear]="!data.arquivo">
 			<mat-step [stepControl]="formFile">
 				<ng-template matStepLabel>Anexe um Vídeo</ng-template>
 				<form [formGroup]="formFile">
-					<input #file (change)="formFile.get('videoFile').setValue(file.files.item(0))" accept=".mp4, .mkv, .webm"
+					<input #file (change)="formFile.get('videoFile').setValue(file.files.item(0))" accept=".mp4, .mkv, .webm, .avi"
 					       class="d-none" type="file"/>
 					<koala-button
 						(click)="file.click()"
@@ -32,7 +32,7 @@
 						[formConfig]="formArquivoConfig"
 						[form]="formArquivo">
 					</koala-dynamic-form>
-					
+
 					<div align="end" class="mt-15">
 						<koala-submit
 							[btnLabel]="btnLabel"
@@ -45,7 +45,7 @@
 			</mat-step>
 		</mat-vertical-stepper>
 	</div>
-	
+
 	<div dialog-actions>
 		<button
 			(click)="excluir()"
@@ -57,5 +57,5 @@
 			Excluir
 		</button>
 	</div>
-	
+
 </koala-dialog>

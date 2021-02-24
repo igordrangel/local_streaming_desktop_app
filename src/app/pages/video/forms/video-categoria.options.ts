@@ -14,5 +14,16 @@ export const videoCategoriaOptions = koala([
 	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.epico),
 	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.documentario),
 	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.comedia),
-	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.anime)
+	VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.anime),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.animacao),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.romance),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.musical),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.aventura),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.drama),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.crime),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.familia),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.faroeste),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.historia),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.kids),
+  VideoCategoriaEnumTranslate.translate(VideoCategoriaEnum.realityShow)
 ]).array<EnumTranslate>().orderBy('name').getValue()
