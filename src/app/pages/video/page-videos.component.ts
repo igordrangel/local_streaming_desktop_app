@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicFormTypeFieldEnum, KoalaDynamicFormFieldInterface, KoalaDynamicFormService } from 'ngx-koala';
+import { DynamicFormTypeFieldEnum, KoalaDialogService, KoalaDynamicFormFieldInterface, KoalaDynamicFormService } from 'ngx-koala';
 import { LocalStreamingService } from '../../core/local-streaming.service';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { videoCategoriaOptions } from './forms/video-categoria.options';
 import { VideoTipoEnum } from './forms/enums/video-tipo.enum';
 import { koala } from 'koala-utils';
 import { IpServer } from '../../shared/ip/ip-server';
+import { DialogFormEnvioVideoComponent } from './forms/dialog-form-envio-video.component';
 
 @Component({
   templateUrl: 'page-videos.component.html',
@@ -25,6 +26,7 @@ export class PageVideosComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private dialog: KoalaDialogService,
     private dynamicFormService: KoalaDynamicFormService,
     private localStreamingService: LocalStreamingService
   ) {
@@ -73,6 +75,16 @@ export class PageVideosComponent implements OnInit {
       }
     }];
     setTimeout(() => this.videos$ = this.getLista(), 1);
+  }
+
+  public dialogVideo(video?: VideoInterface) {
+    this.dialog.open(
+      DialogFormEnvioVideoComponent,
+      'normal',
+      video,
+      'reloadList',
+      () => this.videos$ = this.getLista()
+    );
   }
 
   private getLista() {
