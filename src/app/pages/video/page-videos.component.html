@@ -3,7 +3,7 @@
 	customFolderFontColor="#f1f1f1"
 	titleIcon="slideshow"
 	titlePage="Meu Acervo">
-	
+
 	<nav class="nav-video-page" menu-page>
 		<form [formGroup]="formFilter">
 			<koala-dynamic-form
@@ -19,20 +19,20 @@
 			text="Enviar novo vídeo">
 		</koala-button>
 	</nav>
-	
+
 	<div content>
 		<section *ngIf="videos$ | async as videos else showLoader">
-			<mat-card *ngFor="let video of videos" class="card-video">
-				<img *ngIf="video.poster | async as poster" [alt]="poster.alt" [src]="poster.src" mat-card-image/>
-				<mat-card-header>
-					<mat-card-title>{{video.tituloOriginal}}</mat-card-title>
-					<mat-card-subtitle>{{categoriaTranslate.translate(video.categoria).name}}</mat-card-subtitle>
-				</mat-card-header>
-				<mat-card-actions align="end">
-					<a [routerLink]="'/video/'+video.id" color="primary" mat-button>Visualizar</a>
-					<button (click)="dialogVideo(video)" color="primary" mat-button>Editar</button>
-				</mat-card-actions>
-			</mat-card>
+      <div *ngFor="let video of videos" class="card" [routerLink]="'/video/' + video.id" matRipple>
+        <figure>
+          <div class="img">
+            <img [alt]="video.tituloOriginal" [src]="video.poster"/>
+          </div>
+          <figcaption [matTooltip]="video.tituloOriginal" matTooltipPosition="above">
+            <h2>{{video.tituloOriginal}}</h2>
+            <small>{{categoriaTranslate.translate(video.categoria).name}}</small>
+          </figcaption>
+        </figure>
+      </div>
 		</section>
 		<ng-template #showLoader>
 			<div class="loader">
@@ -40,5 +40,5 @@
 			</div>
 		</ng-template>
 	</div>
-	
+
 </koala-folder-page>

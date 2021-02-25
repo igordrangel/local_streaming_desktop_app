@@ -15,6 +15,7 @@ import { LocalStreamingService } from '../../../core/local-streaming.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { VideoInterface } from '../video.interface';
 import { Router } from '@angular/router';
+import { ImdbService } from '../../../shared/services/imdb/imdb.service';
 
 @Component({
   templateUrl: 'dialog-form-envio-video.component.html'
@@ -29,6 +30,7 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
     private loaderService: KoalaLoaderService,
     private dynamicFormService: KoalaDynamicFormService,
     private localStreamingService: LocalStreamingService,
+    private imdbService: ImdbService,
     private requestService: KoalaRequestService,
     private questionService: KoalaQuestionService,
     private dialogRef: MatDialogRef<DialogFormEnvioVideoComponent>,
@@ -86,10 +88,11 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
 
   public async enviar() {
     this.loading(true);
+    const dados = await this.prepararDadosEnvio();
     await this.requestService
               .request(this.video?.id ?
-                       this.localStreamingService.editar(this.video?.id, this.prepararDadosEnvio()) :
-                       this.localStreamingService.novoVideo(this.prepararDadosEnvio()),
+                       this.localStreamingService.editar(this.video?.id, dados) :
+                       this.localStreamingService.novoVideo(dados),
                 () => {
                   this.dialogRef.close('reloadList');
                   this.loading(false);
@@ -112,7 +115,18 @@ export class DialogFormEnvioVideoComponent extends FormAbstract implements OnIni
     });
   }
 
-  private prepararDadosEnvio() {
-    return this.dynamicFormService.emitData(this.formVideo) as any;
+  private async prepararDadosEnvio() {
+    const video = this.dynamicFormService.emitData(this.formVideo) as any;
+    if (!this.video || !this.video?.poster || this.video?.poster === './assets/poster-default.jpg') {
+      video.poster = await new Promise<string>((resolve, reject) => {
+        this.imdbService
+            .getPoster(video.tituloOriginal)
+            .subscribe(
+              poster => resolve(poster),
+              () => resolve(null)
+            )
+      });
+    }
+    return video;
   }
 }

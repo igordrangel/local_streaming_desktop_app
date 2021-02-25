@@ -28,6 +28,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatRippleModule } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { MatListModule } from '@angular/material/list';
     KoalaDialogModule,
     KoalaButtonModule,
     KoalaFormModule,
-    MatCardModule,
+    MatRippleModule,
+    MatTooltipModule,
     MatStepperModule,
     MatExpansionModule,
     MatListModule,
