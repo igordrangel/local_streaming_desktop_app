@@ -51,9 +51,15 @@
             </mat-expansion-panel-header>
 
             <mat-action-list>
-              <mat-list-item (click)="dialogArquivo(arquivo)" *ngFor="let arquivo of item.arquivos">
+              <mat-list-item (click)="dialogArquivo(arquivo)" *ngFor="let arquivo of item.arquivos;let i = index">
                 <mat-icon mat-list-icon>play_circle</mat-icon>
                 <h4 mat-line>{{arquivo.titulo}}</h4>
+                <div mat-line>
+                  <div class="status-episode" [ngClass]="getStatusEpisodio(i).cssClass">
+                    <mat-icon>{{getStatusEpisodio(i).icon}}</mat-icon>
+                    <span>{{getStatusEpisodio(i).label}}</span>
+                  </div>
+                </div>
                 <a [routerLink]="'./player/' + arquivo.id" mat-raised-button color="primary">Assistir</a>
               </mat-list-item>
             </mat-action-list>

@@ -42,6 +42,36 @@ export class VideoComponent implements OnInit {
 		    });
 	}
 
+	public getStatusEpisodio(index: number) {
+	  let indexCurrent = 0;
+    for (let [indexArquivo, arquivo] of this.video$.getValue().arquivos.entries()) {
+      if (arquivo.current) {
+        indexCurrent = indexArquivo;
+        break;
+      }
+    }
+
+	  if (index === indexCurrent) {
+	    return {
+	      label: 'Assistindo',
+        icon: 'play_circle',
+        cssClass: 'assistindo'
+      };
+    } else if (index < indexCurrent) {
+      return {
+        label: 'Assistido',
+        icon: 'check_circle',
+        cssClass: 'assistido'
+      };
+    } else {
+      return {
+        label: 'Não Assistido',
+        icon: 'stop',
+        cssClass: 'naoAssistido'
+      };
+    }
+  }
+
 	public editar() {
 		this.dialog.open(
 			DialogFormEnvioVideoComponent,

@@ -1,6 +1,11 @@
 .loader {align-items: center;display: flex;flex-direction: column;height: calc(100vh - 200px);justify-content: center;width: 100vw;}
 .nav-menu-arquivos {align-items: center;display: flex;justify-content: flex-start;}
 .nav-menu-arquivos h2 {color: rgba(255, 255, 255, .6);font-family: 'Josefin Sans', sans-serif;font-weight: bold;margin: 0;padding: 0 20px;}
-.playlist {display: block;overflow: auto;height: calc(100vh - 128px);padding: 0 15px 15px;margin-top: 15px;box-sizing: border-box;}
+.playlist {display: block;overflow: auto;height: calc(100vh - 113px);padding: 0 15px 15px;margin-top: 15px;box-sizing: border-box;}
 .temporada {color: rgba(255, 255, 255, .56);}
+.status-episode {display: flex;justify-content: center;align-items: center;padding: 2px 0;font-size: 11px;width: fit-content;}
+.status-episode mat-icon {font-size: 15px;width: 15px;height: 15px;line-height: 11px;margin-right: 5px;}
+.status-episode.assistido {color: #8BC34A;}
+.status-episode.assistindo {color: #03A9F4;}
+.status-episode.naoAssistido {color: #F44336;}
 mat-list-item {color: #FFFFFF !important;}
