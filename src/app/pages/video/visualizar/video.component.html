@@ -39,6 +39,7 @@
           <mat-list-item (click)="dialogArquivo(arquivo)" *ngFor="let arquivo of item.arquivos">
             <mat-icon mat-list-icon>play_circle</mat-icon>
             <h4 mat-line>{{arquivo.titulo}}</h4>
+            <a [routerLink]="'./player/' + arquivo.id" mat-raised-button color="primary">Assistir</a>
           </mat-list-item>
         </mat-action-list>
       </div>
@@ -53,6 +54,7 @@
               <mat-list-item (click)="dialogArquivo(arquivo)" *ngFor="let arquivo of item.arquivos">
                 <mat-icon mat-list-icon>play_circle</mat-icon>
                 <h4 mat-line>{{arquivo.titulo}}</h4>
+                <a [routerLink]="'./player/' + arquivo.id" mat-raised-button color="primary">Assistir</a>
               </mat-list-item>
             </mat-action-list>
 

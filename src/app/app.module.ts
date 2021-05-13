@@ -30,12 +30,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PageVideoPlayerComponent } from './pages/video/visualizar/player/page-video-player.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageVideosComponent,
     VideoComponent,
+    PageVideoPlayerComponent,
     DialogFormEnvioVideoComponent,
     DialogFormEnvioArquivoComponent
   ],

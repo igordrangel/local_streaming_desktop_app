@@ -1,0 +1,2 @@
+section {display: flex;justify-content: center;align-items: center;width: 100%;height: calc(100vh - 120px);}
+section video {width: 100%;height: calc(100vh - 10px);background: #000;}
