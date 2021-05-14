@@ -54,7 +54,6 @@ export class VideoComponent implements OnInit {
       }
     }
 
-    console.log(index,indexCurrent,temporadaCurrent);
 	  if (index === indexCurrent && temporada === temporadaCurrent) {
 	    return {
 	      label: 'Assistindo',
