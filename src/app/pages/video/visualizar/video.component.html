@@ -34,7 +34,7 @@
 					tooltip="Adicionar Arquivo">
 				</koala-button>
 			</nav>
-      <div *ngIf="videoInfo?.tipo === videoTipo.filme else playlistSeries" class="playlist">
+      <div *ngIf="videoInfo?.tipo === videoTipo.filme && playlist$ | async as playlist else playlistSeries" class="playlist">
         <mat-action-list *ngFor="let item of playlist">
           <mat-list-item (click)="dialogArquivo(arquivo)" *ngFor="let arquivo of item.arquivos">
             <mat-icon mat-list-icon>play_circle</mat-icon>
@@ -44,7 +44,7 @@
         </mat-action-list>
       </div>
       <ng-template #playlistSeries>
-        <mat-accordion class="playlist">
+        <mat-accordion *ngIf="playlist$ | async as playlist" class="playlist">
           <mat-expansion-panel *ngFor="let item of playlist">
             <mat-expansion-panel-header>
               <mat-panel-title>{{item.temporada}}ª Temporada</mat-panel-title>
@@ -55,9 +55,9 @@
                 <mat-icon mat-list-icon>play_circle</mat-icon>
                 <h4 mat-line>{{arquivo.titulo}}</h4>
                 <div mat-line>
-                  <div class="status-episode" [ngClass]="getStatusEpisodio(i).cssClass">
-                    <mat-icon>{{getStatusEpisodio(i).icon}}</mat-icon>
-                    <span>{{getStatusEpisodio(i).label}}</span>
+                  <div class="status-episode" [ngClass]="getStatusEpisodio(i, item.temporada).cssClass">
+                    <mat-icon>{{getStatusEpisodio(i, item.temporada).icon}}</mat-icon>
+                    <span>{{getStatusEpisodio(i, item.temporada).label}}</span>
                   </div>
                 </div>
                 <a [routerLink]="'./player/' + arquivo.id" mat-raised-button color="primary">Assistir</a>

@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { VideoInterface } from "../video.interface";
-import { LocalStreamingService } from "../../../core/local-streaming.service";
-import { ActivatedRoute } from "@angular/router";
-import { VideoTipoEnum } from "../forms/enums/video-tipo.enum";
-import { VideoCategoriaEnumTranslate } from "../forms/enums/translate/video-categoria.enum.translate";
-import { DialogFormEnvioVideoComponent } from "../forms/dialog-form-envio-video.component";
-import { KoalaDialogService } from "ngx-koala";
-import { DialogFormEnvioArquivoComponent } from "./forms/dialog-form-envio-arquivo.component";
-import { VideoArquivoInterface } from "../video-arquivo.interface";
-import { koala } from "koala-utils";
-import { KlDelay } from "koala-utils/dist/utils/KlDelay";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { VideoInterface } from '../video.interface';
+import { LocalStreamingService } from '../../../core/local-streaming.service';
+import { ActivatedRoute } from '@angular/router';
+import { VideoTipoEnum } from '../forms/enums/video-tipo.enum';
+import { VideoCategoriaEnumTranslate } from '../forms/enums/translate/video-categoria.enum.translate';
+import { DialogFormEnvioVideoComponent } from '../forms/dialog-form-envio-video.component';
+import { KoalaDialogService } from 'ngx-koala';
+import { DialogFormEnvioArquivoComponent } from './forms/dialog-form-envio-arquivo.component';
+import { VideoArquivoInterface } from '../video-arquivo.interface';
+import { koala } from 'koala-utils';
+import { KlDelay } from 'koala-utils/dist/utils/KlDelay';
 
 interface ListaArquivos {
 	temporada: number;
@@ -19,13 +19,14 @@ interface ListaArquivos {
 
 @Component({
 	templateUrl: 'video.component.html',
-	styleUrls: ['video.component.css']
+	styleUrls: ['video.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VideoComponent implements OnInit {
 	public video$ = new BehaviorSubject<VideoInterface>(null);
 	public videoTipo = VideoTipoEnum;
 	public videoCategoriaTranslate = VideoCategoriaEnumTranslate;
-  public playlist: ListaArquivos[];
+  public playlist$ = new BehaviorSubject<ListaArquivos[]>([]);
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -42,22 +43,25 @@ export class VideoComponent implements OnInit {
 		    });
 	}
 
-	public getStatusEpisodio(index: number) {
+	public getStatusEpisodio(index: number, temporada: number) {
+    const temporadaCurrent = this.playlist$.getValue().find(item => !!item.arquivos.find(arquivo => arquivo.current === true)).temporada;
+
 	  let indexCurrent = 0;
-    for (let [indexArquivo, arquivo] of this.video$.getValue().arquivos.entries()) {
+    for (let [indexArquivo, arquivo] of this.playlist$.getValue().find(item => item.temporada === temporada).arquivos.entries()) {
       if (arquivo.current) {
         indexCurrent = indexArquivo;
         break;
       }
     }
 
-	  if (index === indexCurrent) {
+    console.log(index,indexCurrent,temporadaCurrent);
+	  if (index === indexCurrent && temporada === temporadaCurrent) {
 	    return {
 	      label: 'Assistindo',
         icon: 'play_circle',
         cssClass: 'assistindo'
       };
-    } else if (index < indexCurrent) {
+    } else if (index < indexCurrent || temporada < temporadaCurrent) {
       return {
         label: 'Assistido',
         icon: 'check_circle',
@@ -107,9 +111,8 @@ export class VideoComponent implements OnInit {
 	}
 
   private setPlaylist() {
-    this.playlist = [];
     setTimeout(() => {
-      this.playlist = koala(this.video$.getValue()?.arquivos ?? [])
+      this.playlist$.next(koala(this.video$.getValue()?.arquivos ?? [])
         .array<VideoArquivoInterface>()
         .pipe(klArray => {
           let listaArquivos: ListaArquivos[] = [];
@@ -134,7 +137,7 @@ export class VideoComponent implements OnInit {
           return listaArquivos;
         })
         .orderBy('temporada')
-        .getValue();
+        .getValue());
     }, 50);
   }
 }
