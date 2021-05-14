@@ -11,7 +11,7 @@
         </koala-button>
         <div class="video-info">
           <h1>{{videoInfo.video.tituloOriginal + ' - ' + videoInfo.arquivo?.titulo}}</h1>
-          <small>{{videoInfo.arquivo.temporada}}ª Temporada</small>
+          <small *ngIf="videoInfo.video.tipo === tipoVideo.serie">{{videoInfo.arquivo.temporada}}ª Temporada</small>
         </div>
         <mat-checkbox [formControl]="controlReproducaoAutomatica">Reprodução Automática</mat-checkbox>
       </div>

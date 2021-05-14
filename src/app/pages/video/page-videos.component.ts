@@ -8,7 +8,6 @@ import { VideoCategoriaEnumTranslate } from './forms/enums/translate/video-categ
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { videoTipoOptions } from './forms/video-tipo.options';
 import { videoCategoriaOptions } from './forms/video-categoria.options';
-import { VideoTipoEnum } from './forms/enums/video-tipo.enum';
 import { koala } from 'koala-utils';
 import { IpServer } from '../../shared/ip/ip-server';
 import { DialogFormEnvioVideoComponent } from './forms/dialog-form-envio-video.component';
@@ -40,8 +39,7 @@ export class PageVideosComponent implements OnInit {
       appearance: 'legacy',
       class: 'col-2 mr-8',
       fieldClass: 'w-100',
-      opcoesSelect: videoTipoOptions,
-      value: VideoTipoEnum.filme,
+      opcoesSelect: koala([{value: '', name: 'Todos os Tipos'},]).array<any>().merge(videoTipoOptions).getValue(),
       valueChanges: () => this.videos$ = this.getLista()
     }, {
       name: 'categoria',
@@ -96,7 +94,7 @@ export class PageVideosComponent implements OnInit {
                      sort: 'e.id',
                      order: 'DESC',
                      page: 0,
-                     limit: 100
+                     limit: 30
                    })
                    .getValue()
                )

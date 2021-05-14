@@ -9,6 +9,7 @@ import { IpServer } from '../../../../shared/ip/ip-server';
 import { FormControl } from '@angular/forms';
 import { koala } from 'koala-utils';
 import { ListaArquivos } from '../video.component';
+import { VideoTipoEnum } from '../../forms/enums/video-tipo.enum';
 
 @Component({
   templateUrl: 'page-video-player.component.html',
@@ -19,6 +20,7 @@ export class PageVideoPlayerComponent implements OnInit {
     video: VideoInterface;
     arquivo: VideoArquivoInterface;
   }>(null);
+  public tipoVideo = VideoTipoEnum;
   public controlReproducaoAutomatica = new FormControl(false);
   private intervalTimerVideo: any;
   @ViewChild('videoEl', {static: false}) private videoEl: ElementRef<HTMLVideoElement>;
