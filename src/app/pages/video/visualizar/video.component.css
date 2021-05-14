@@ -8,4 +8,6 @@
 .status-episode.assistido {color: #8BC34A;}
 .status-episode.assistindo {color: #03A9F4;}
 .status-episode.naoAssistido {color: #F44336;}
+.btn-assistir {color: #fff;}
+.btn-assistir mat-icon {position: relative;display: block;top: 0;}
 mat-list-item {color: #FFFFFF !important;}

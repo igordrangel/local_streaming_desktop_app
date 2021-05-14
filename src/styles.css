@@ -23,3 +23,9 @@ nav.nav-video-page .mat-form-field-ripple {background: transparent !important;}
 .mat-expansion-panel-header-title {color: rgba(255, 255, 255, .56);}
 .mat-expansion-indicator:after {color: #fff;}
 .mat-expansion-panel-body {padding: 0!important;margin: 0!important;}
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {background-color: #fff !important;}
+.mat-checkbox-checkmark-path {stroke: #000 !important;}
+.mat-checkbox-checkmark {fill: #000 !important;}
+.mat-checkbox-mixedmark {background-color: #000 !important;}
+.mat-checkbox-frame {border-color: #fff!important;}

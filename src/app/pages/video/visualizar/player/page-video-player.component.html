@@ -1,29 +1,25 @@
 <div *ngIf="(video$ | async) as videoInfo; else showLoader">
-  <koala-folder-page
-    [titleIcon]="videoInfo.video.tipo === videoTipo.filme ? 'movie' : 'videocam'"
-    [titlePage]="videoInfo.video.tituloOriginal + ' - ' + videoInfo.arquivo?.titulo"
-    customFolderBackgroudColor="#212121"
-    customFolderFontColor="#f1f1f1">
-
-    <nav menu-page>
-      <koala-button
-        backgroundColor="transparent"
-        class="mr-8"
-        color="white"
-        icon="arrow_back"
-        [routerLink]="'/video/' + videoInfo.video.id"
-        text="Voltar">
-      </koala-button>
-    </nav>
-
-    <section content>
-      <video controls [poster]="videoInfo.video.poster" crossorigin="anonymous">
+    <section>
+      <div class="header-video">
+        <koala-button
+          backgroundColor="transparent"
+          class="mr-8"
+          color="white"
+          icon="arrow_back"
+          [routerLink]="'/video/' + videoInfo.video.id"
+          tooltip="Voltar">
+        </koala-button>
+        <div class="video-info">
+          <h1>{{videoInfo.video.tituloOriginal + ' - ' + videoInfo.arquivo?.titulo}}</h1>
+          <small>{{videoInfo.arquivo.temporada}}ª Temporada</small>
+        </div>
+        <mat-checkbox [formControl]="controlReproducaoAutomatica">Reprodução Automática</mat-checkbox>
+      </div>
+      <video #videoEl controls [poster]="videoInfo.video.poster" crossorigin="anonymous">
         <source type="video/mp4" [src]="getUriVideo()">
         <track default label="Português (Brasil)" [src]="getUriSubtitle()">
       </video>
     </section>
-
-  </koala-folder-page>
 </div>
 
 <ng-template #showLoader>

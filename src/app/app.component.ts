@@ -8,5 +8,4 @@ import { KoalaQuestionService } from "ngx-koala";
   providers: [KoalaQuestionService]
 })
 export class AppComponent {
-  public openPages = ['/videos'];
 }

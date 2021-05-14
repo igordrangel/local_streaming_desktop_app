@@ -12,7 +12,7 @@ import { VideoArquivoInterface } from '../video-arquivo.interface';
 import { koala } from 'koala-utils';
 import { KlDelay } from 'koala-utils/dist/utils/KlDelay';
 
-interface ListaArquivos {
+export interface ListaArquivos {
 	temporada: number;
 	arquivos: VideoArquivoInterface[];
 }
