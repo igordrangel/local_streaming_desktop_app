@@ -1,5 +1,5 @@
 <div *ngIf="(video$ | async) as videoInfo; else showLoader">
-    <section>
+    <section (mousemove)="toggleHeader()" [ngClass]="{'show-header': (showHeader$ | async) || videoEl.paused}">
       <div class="header-video">
         <koala-button
           backgroundColor="transparent"

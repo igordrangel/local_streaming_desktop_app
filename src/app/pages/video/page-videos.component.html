@@ -1,44 +1,46 @@
-<koala-folder-page
-	customFolderBackgroudColor="#212121"
-	customFolderFontColor="#f1f1f1"
-	titleIcon="slideshow"
-	titlePage="Meu Acervo">
+<div class="page-container">
+  <koala-folder-page
+    customFolderBackgroudColor="#212121"
+    customFolderFontColor="#f1f1f1"
+    titleIcon="slideshow"
+    titlePage="Meu Acervo">
 
-	<nav class="nav-video-page" menu-page>
-		<form [formGroup]="formFilter">
-			<koala-dynamic-form
-				[formConfig]="formFilterConfig"
-				[form]="formFilter">
-			</koala-dynamic-form>
-		</form>
-		<koala-button
-			(click)="dialogVideo()"
-			backgroundColor="transparent"
-			color="white"
-			icon="queue_play_next"
-			text="Enviar novo vídeo">
-		</koala-button>
-	</nav>
+    <nav class="nav-video-page" menu-page>
+      <form [formGroup]="formFilter">
+        <koala-dynamic-form
+          [formConfig]="formFilterConfig"
+          [form]="formFilter">
+        </koala-dynamic-form>
+      </form>
+      <koala-button
+        (click)="dialogVideo()"
+        backgroundColor="transparent"
+        color="white"
+        icon="queue_play_next"
+        text="Enviar novo vídeo">
+      </koala-button>
+    </nav>
 
-	<div content>
-		<section *ngIf="videos$ | async as videos else showLoader">
-      <div *ngFor="let video of videos" class="card" [routerLink]="'/video/' + video.id" matRipple>
-        <figure>
-          <div class="img">
-            <img [alt]="video.tituloOriginal" [src]="video.poster"/>
-          </div>
-          <figcaption [matTooltip]="video.tituloOriginal" matTooltipPosition="above">
-            <h2>{{video.tituloOriginal}}</h2>
-            <small>{{categoriaTranslate.translate(video.categoria).name}}</small>
-          </figcaption>
-        </figure>
-      </div>
-		</section>
-		<ng-template #showLoader>
-			<div class="loader">
-				<mat-spinner color="primary" diameter="60"></mat-spinner>
-			</div>
-		</ng-template>
-	</div>
+    <div content>
+      <section *ngIf="videos$ | async as videos else showLoader">
+        <div *ngFor="let video of videos" class="card" [routerLink]="'/video/' + video.id" matRipple>
+          <figure>
+            <div class="img">
+              <img [alt]="video.tituloOriginal" [src]="video.poster"/>
+            </div>
+            <figcaption [matTooltip]="video.tituloOriginal" matTooltipPosition="above">
+              <h2>{{video.tituloOriginal}}</h2>
+              <small>{{categoriaTranslate.translate(video.categoria).name}}</small>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+      <ng-template #showLoader>
+        <div class="loader">
+          <mat-spinner color="primary" diameter="60"></mat-spinner>
+        </div>
+      </ng-template>
+    </div>
 
-</koala-folder-page>
+  </koala-folder-page>
+</div>

@@ -1,4 +1,4 @@
-<div *ngIf="video$ | async as videoInfo; else showLoader">
+<div class="page-container" *ngIf="video$ | async as videoInfo; else showLoader">
 	<koala-folder-page
 		[titleIcon]="videoInfo.tipo === videoTipo.filme ? 'movie' : 'videocam'"
 		[titlePage]="videoInfo.tituloOriginal + ' - ' + videoCategoriaTranslate.translate(videoInfo.categoria).name"

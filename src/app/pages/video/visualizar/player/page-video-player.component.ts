@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { VideoInterface } from '../../video.interface';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,12 +15,13 @@ import { VideoTipoEnum } from '../../forms/enums/video-tipo.enum';
   templateUrl: 'page-video-player.component.html',
   styleUrls: ['page-video-player.component.css']
 })
-export class PageVideoPlayerComponent implements OnInit {
+export class PageVideoPlayerComponent implements OnInit,OnDestroy {
   public video$ = new BehaviorSubject<{
     video: VideoInterface;
     arquivo: VideoArquivoInterface;
   }>(null);
   public tipoVideo = VideoTipoEnum;
+  public showHeader$ = new BehaviorSubject<boolean>(false);
   public controlReproducaoAutomatica = new FormControl(false);
   private intervalTimerVideo: any;
   @ViewChild('videoEl', {static: false}) private videoEl: ElementRef<HTMLVideoElement>;
@@ -43,12 +44,23 @@ export class PageVideoPlayerComponent implements OnInit {
     this.controlReproducaoAutomatica.valueChanges.subscribe(reproducaoAutomatica => this.setReproducaoAutomatica(reproducaoAutomatica));
   }
 
+  ngOnDestroy() {
+    if (this.intervalTimerVideo) clearInterval(this.intervalTimerVideo);
+  }
+
   public getUriVideo() {
     return `http://${IpServer.getIp()}:3000/video/${this.video$.getValue().video.id}/${this.video$.getValue().arquivo.filename}`;
   }
 
   public getUriSubtitle() {
     return `http://${IpServer.getIp()}:3000/video/${this.video$.getValue().video.id}/${this.video$.getValue().arquivo.legendaFilename.replace('.srt', '.vtt')}`;
+  }
+
+  public toggleHeader() {
+    this.showHeader$.next(true);
+    if (!this.videoEl.nativeElement.paused) {
+      setTimeout(() => this.showHeader$.next(false), 3000);
+    }
   }
 
   private async loadVideo(id: number, idArquivo: number) {

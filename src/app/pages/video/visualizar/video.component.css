@@ -1,3 +1,4 @@
+.page-container {padding: 10px 0;}
 .loader {align-items: center;display: flex;flex-direction: column;height: calc(100vh - 200px);justify-content: center;width: 100vw;}
 .nav-menu-arquivos {align-items: center;display: flex;justify-content: flex-start;}
 .nav-menu-arquivos h2 {color: rgba(255, 255, 255, .6);font-family: 'Josefin Sans', sans-serif;font-weight: bold;margin: 0;padding: 0 20px;}
